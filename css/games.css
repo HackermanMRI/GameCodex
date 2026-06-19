@@ -1,0 +1,169 @@
+/* =============================================================
+   games.css — GameCodex
+   Flat 3-column tile grid. 2:3 portrait cards.
+   ============================================================= */
+
+/* ── TILE GRID ───────────────────────────────────────────────── */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+/* ── GAME TILE ───────────────────────────────────────────────── */
+.game-tile {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  cursor: default;
+}
+
+.game-tile:hover {
+  border-color: var(--neon-cyan);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,245,255,0.12);
+}
+
+/* ── TILE IMAGE (2:3 portrait) ───────────────────────────────── */
+.tile-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.tile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.game-tile:hover .tile-img { transform: scale(1.04); }
+
+/* Gradient overlay at the bottom of image */
+.tile-img-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40%;
+  background: linear-gradient(to top, var(--bg-card), transparent);
+  pointer-events: none;
+}
+
+/* Fallback when no image */
+.tile-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: var(--text-muted);
+}
+
+/* Rating badge overlaid top-right of image */
+.tile-rating-badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: rgba(2,4,8,0.85);
+  border: 1px solid var(--neon-yellow);
+  color: var(--neon-yellow);
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 2px;
+  text-shadow: 0 0 8px rgba(255,255,0,0.5);
+  letter-spacing: 1px;
+  opacity: 0;
+}
+
+/* ── TILE BODY ───────────────────────────────────────────────── */
+.tile-body {
+  padding: 0.9rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* Game name — cyan */
+.tile-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Franchise name — purple/muted */
+.tile-franchise {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--neon-purple);
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+/* Star row */
+.tile-stars {
+  display: flex;
+  gap: 1px;
+  margin: 0.1rem 0;
+}
+
+.tile-star {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.tile-star.filled {
+  color: var(--neon-yellow);
+  text-shadow: 0 0 6px rgba(255,255,0,0.5);
+}
+
+/* Year — muted monospace */
+.tile-meta {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* Note — pink italic */
+.tile-note {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.78rem;
+  color: white;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  opacity: 0.85;
+  margin-top: 0.2rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.3;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media (max-width: 800px) {
+  .tile-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .tile-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .tile-name  { font-size: 0.68rem; }
+}

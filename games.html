@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameCodex — Game List</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/games.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">GAME<span>CODEX</span></a>
+    <div class="nav-links">
+      <a href="index.html"  class="nav-link" data-page="dashboard">Dashboard</a>
+      <a href="games.html"  class="nav-link" data-page="games">Game List</a>
+    </div>
+  </nav>
+
+  <main class="page-wrapper">
+
+    <div class="page-header">
+      <h1 class="page-title">GAME <span>LIST</span></h1>
+      <p class="page-subtitle">// MY GAMING JOURNEY</p>
+    </div>
+
+    <div id="gameListContainer">
+      <div class="empty-state">
+        <span class="icon">🎮</span>
+        <p>ADD GAMES TO js/games-data.js TO START YOUR ARCHIVE</p>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/games-data.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/games.js"></script>
+
+</body>
+</html>

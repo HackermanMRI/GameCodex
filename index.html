@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameCodex — Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">GAME<span>CODEX</span></a>
+    <div class="nav-links">
+      <a href="index.html"  class="nav-link" data-page="dashboard">Dashboard</a>
+      <a href="games.html"  class="nav-link" data-page="games">Game List</a>
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <!-- BANNER -->
+    <div class="hero-banner" id="heroBanner">
+      <div class="hero-banner-overlay"></div>
+      <div class="hero-title-block">
+        <div class="site-title">GAME<span>CODEX</span></div>
+        <div class="site-subtitle">// PERSONAL GAMING ARCHIVE</div>
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="stat-num" id="statTotal">0</span>
+        <span class="stat-label">Total Games</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statYear">0</span>
+        <span class="stat-label" id="statYearLabel">This Year</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statFranchises">0</span>
+        <span class="stat-label">Franchises</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statActiveYear">—</span>
+        <span class="stat-label">Most Active Year</span>
+      </div>
+    </div>
+
+    <!-- BAR CHART -->
+    <div class="chart-section">
+      <div class="section-label">GAMEPLAY RATE BY YEAR</div>
+      <div class="chart-wrap">
+        <div class="chart-bars" id="chartBars">
+          <div class="empty-state" style="width:100%">
+            <p>ADD GAMES TO SEE YOUR CHART</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP RATED PODIUM (full width, shown first) -->
+    <div class="panel-section">
+      <div class="section-label">TOP RATED</div>
+      <div class="panel-box">
+        <div id="topRatedPodium"></div>
+      </div>
+    </div>
+
+    <!-- LATEST GAMES CAROUSEL (full width, below top rated) -->
+    <div class="panel-section">
+      <div class="section-label">RECENTLY PLAYED</div>
+      <div class="panel-box" style="padding: 1.5rem 0;">
+        <div id="latestCarousel"></div>
+      </div>
+    </div>
+
+    <!-- GAMING SETUP -->
+    <div class="specs-section">
+      <div class="section-label">GAMING SETUP</div>
+      <div class="specs-grid" id="specsGrid"></div>
+    </div>
+    <div class="showcase-section">
+      <div class="showcase-img-wrap">
+        <img src="images/rig.PNG">
+        <div class="showcase-overlay"></div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/games-data.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/dashboard.js"></script>
+
+</body>
+</html>
