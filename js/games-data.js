@@ -32,6 +32,19 @@
    ============================================================= */
 
 const GAME_DATA = [
+  
+
+    {
+    name:          "Resident Evil 9: Requiem",
+    image:         "images/GamePics/re9.jpg",
+    month:         "June",
+    year:          2026,
+    rating:        0,
+    note:          "Leon and Claire’s final battle against the Umbrella Corporation",
+    franchiseId:   "Resident Evil",
+    franchiseName: "Resident Evil"
+  },
+
 
   {
     name:          "The Witcher 3: Wild Hunt",
