@@ -36,8 +36,10 @@ function getTopRated(n = 5) {
 
 /**
  * getLatest(n)
- * Returns last N games in ARRAY ORDER — bottom of array = most recent.
+ * Returns the FIRST N games in array order — TOP of array = most recent.
  * No date sorting. Order is exactly as written in games-data.js.
+ * (Comment previously claimed bottom-of-array = newest, contradicting
+ *  both the code and the actual data convention.)
  */
 function getLatest(n = 10) {
   return [...GAME_DATA].slice(0, n);

@@ -4,8 +4,10 @@
    THIS IS THE ONLY FILE YOU NEED TO EDIT TO ADD GAMES.
 
    HOW TO ADD A GAME:
-   - Copy one object below, paste it at the BOTTOM of the array.
-   - The bottom of the array = your most recently played games.
+   - Copy one object below, paste it at the TOP of the array.
+   - The TOP of the array = your most recently played games.
+     (The carousel shows the first 10 entries, and the Game List
+      renders in exact array order — newest first.)
    - Fill in all fields. Leave image: "" if you have no image yet.
 
    GAME OBJECT STRUCTURE:
@@ -73,7 +75,7 @@ const GAME_DATA = [
   {
     name:          "Sekiro: Shadows Die Twice",
     image:         "images/GamePics/sekiro.jpg",
-    month:         "Auigust",
+    month:         "August",
     year:          2025,
     rating:        7,
     note:          "A shinobi bound to loyalty and blade",
@@ -116,7 +118,7 @@ const GAME_DATA = [
 
 
   {
-    name:          "Read Dead Redemption",
+    name:          "Red Dead Redemption",
     image:         "images/GamePics/rdr.jpg",
     month:         "April",
     year:          2024,
@@ -207,7 +209,7 @@ const GAME_DATA = [
   },
 
   {
-    name:          "Call of Duty: Mordern Warfare 2",
+    name:          "Call of Duty: Modern Warfare 2",
     image:         "images/GamePics/cod6.jpg",
     month:         "May",
     year:          2023,
@@ -252,7 +254,7 @@ const GAME_DATA = [
   },
 
   {
-    name:          "Read Dead Redemption 2",
+    name:          "Red Dead Redemption 2",
     image:         "images/GamePics/rdr2.jpg",
     month:         "March",
     year:          2023,
@@ -268,7 +270,7 @@ const GAME_DATA = [
     month:         "March",
     year:          2023,
     rating:        6,
-    note:          "Frankline-Micheal-Trevor, three men, one chaotic fate",
+    note:          "Franklin-Michael-Trevor, three men, one chaotic fate",
     franchiseId:   "gta",
     franchiseName: "Grand Theft Auto"
   },

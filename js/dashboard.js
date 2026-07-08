@@ -79,12 +79,17 @@ function renderTopRated() {
     return;
   }
 
+  /* Layout data (order / scale / y-offset / opacity) now lives in
+     dashboard.css under the .podium-rank-N classes. Inline styles
+     always beat media queries, which is exactly what broke the
+     mobile layout before — CSS classes let each breakpoint restyle
+     the ranks freely. Only per-rank COLORS stay here in JS. */
   const rankMeta = [
-    { rank: 1, label: '🥇', glowColor: 'rgba(255,215,0,0.6)',   borderColor: '#ffd700', order: 3, scale: 1,    yOffset: '-20px', opacity: 1    },
-    { rank: 2, label: '🥈', glowColor: 'rgba(192,192,192,0.4)', borderColor: '#c0c0c0', order: 2, scale: 0.88, yOffset: '0px',   opacity: 0.9  },
-    { rank: 3, label: '🥉', glowColor: 'rgba(205,127,50,0.4)',  borderColor: '#cd7f32', order: 4, scale: 0.88, yOffset: '0px',   opacity: 0.9  },
-    { rank: 4, label: '4',  glowColor: 'rgba(0,245,255,0.15)',  borderColor: 'rgba(0,245,255,0.2)', order: 1, scale: 0.75, yOffset: '10px', opacity: 0.6 },
-    { rank: 5, label: '5',  glowColor: 'rgba(0,245,255,0.15)',  borderColor: 'rgba(0,245,255,0.2)', order: 5, scale: 0.75, yOffset: '10px', opacity: 0.6 },
+    { rank: 1, label: '🥇', glowColor: 'rgba(255,215,0,0.6)',   borderColor: '#ffd700' },
+    { rank: 2, label: '🥈', glowColor: 'rgba(192,192,192,0.4)', borderColor: '#c0c0c0' },
+    { rank: 3, label: '🥉', glowColor: 'rgba(205,127,50,0.4)',  borderColor: '#cd7f32' },
+    { rank: 4, label: '4',  glowColor: 'rgba(0,245,255,0.15)',  borderColor: 'rgba(0,245,255,0.2)' },
+    { rank: 5, label: '5',  glowColor: 'rgba(0,245,255,0.15)',  borderColor: 'rgba(0,245,255,0.2)' },
   ];
 
   container.innerHTML = games.map((g, i) => {
@@ -92,8 +97,7 @@ function renderTopRated() {
     const imgSrc = g.image || '';
 
     return `
-      <div class="podium-card podium-rank-${meta.rank}"
-           style="order:${meta.order};transform:scale(${meta.scale}) translateY(${meta.yOffset});opacity:${meta.opacity};">
+      <div class="podium-card podium-rank-${meta.rank}">
         <div class="podium-rank-badge" style="border-color:${meta.borderColor};color:${meta.borderColor};">
           ${meta.label}
         </div>
@@ -175,9 +179,16 @@ function updateCarousel() {
   const track = document.getElementById('carouselTrack');
   if (!track) return;
 
-  const cards     = track.querySelectorAll('.carousel-card');
-  const cardWidth = 200; // px — matches CSS
-  const gap       = 24;  // px — matches CSS gap
+  const cards = track.querySelectorAll('.carousel-card');
+  if (cards.length === 0) return;
+
+  /* Measure geometry from the DOM instead of hardcoding it.
+     CSS is the single source of truth — media queries that resize
+     cards (e.g. 140px on mobile) are picked up automatically.
+     Note: offsetWidth ignores transform:scale(), which is exactly
+     what we want (the layout width, not the visual width). */
+  const cardWidth = cards[0].offsetWidth;
+  const gap       = parseFloat(getComputedStyle(track).gap) || 24;
   const step      = cardWidth + gap;
 
   // Center the active card in the viewport

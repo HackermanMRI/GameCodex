@@ -229,6 +229,16 @@
   transform-origin: bottom center;
 }
 
+/* Per-rank layout — order / scale / elevation / opacity.
+   Moved here from inline styles in dashboard.js so media queries
+   below can override them (inline styles always beat stylesheets).
+   Visual order: rank4  rank2  rank1  rank3  rank5 */
+.podium-rank-1 { order: 3; transform: scale(1)    translateY(-20px); opacity: 1;   }
+.podium-rank-2 { order: 2; transform: scale(0.88) translateY(0);     opacity: 0.9; }
+.podium-rank-3 { order: 4; transform: scale(0.88) translateY(0);     opacity: 0.9; }
+.podium-rank-4 { order: 1; transform: scale(0.75) translateY(10px);  opacity: 0.6; }
+.podium-rank-5 { order: 5; transform: scale(0.75) translateY(10px);  opacity: 0.6; }
+
 /* Rank badge top-left of image */
 .podium-rank-badge {
   position: absolute;
@@ -545,9 +555,12 @@
   50%       { box-shadow: 0 0 20px rgba(0,245,255,0.3), 0 0 40px rgba(0,245,255,0.1); }
 }
 
+/* Keyframe selectors must be within 0%–100%. The old "150%" frame
+   was invalid and silently dropped, leaving a one-frame animation
+   that did nothing. */
 @keyframes breathingGlow {
-  0%   { filter: drop-shadow(0 0 5px var(--neon-cyan)) brightness(1); }
-  150% { filter: drop-shadow(0 0 10px var(--neon-cyan)) brightness(1.3); }
+  0%   { filter: drop-shadow(0 0 5px var(--neon-cyan))  brightness(1); }
+  100% { filter: drop-shadow(0 0 10px var(--neon-cyan)) brightness(1.15); }
 }
 
 
@@ -559,13 +572,29 @@
   .site-title { font-size: 2rem; letter-spacing: 4px; }
   .hero-banner { height: 220px; }
 
-  #topRatedPodium { gap: 0.5rem; min-height: 280px; }
+  #topRatedPodium { gap: 0.5rem; min-height: 280px; padding: 1.5rem 0.5rem 0.5rem; }
   .podium-img-wrap { width: 80px; height: 120px; }
   .podium-rank-1 .podium-img-wrap { width: 110px; height: 165px; }
-  .podium-rank-4 .podium-img-wrap,
-  .podium-rank-5 .podium-img-wrap { display: none; }
+
+  /* Hide the ENTIRE card for ranks 4–5, not just the image.
+     Hiding only .podium-img-wrap left orphaned badge/name/rating
+     text floating in the flex row, squeezing the top-3 layout. */
+  .podium-rank-4,
+  .podium-rank-5 { display: none; }
+
+  /* Soften rank-1 elevation — the desktop -20px lift is
+     disproportionate next to 120px-tall mobile cards. */
+  .podium-rank-1 { transform: scale(1) translateY(-10px); }
+
+  .podium-info { max-width: 100px; }
 
   .carousel-img-wrap { width: 140px; height: 210px; }
   .carousel-card { width: 140px; }
   #latestCarousel { height: 280px; }
+
+  /* Fade masks: 120px × 2 = 240px covered ~70% of a ~340px
+     phone container — even the centered card sat under the fade.
+     40px keeps the edge-fade effect at sane proportions. */
+  #latestCarousel::before,
+  #latestCarousel::after { width: 40px; }
 }

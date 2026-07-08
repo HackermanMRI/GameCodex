@@ -80,8 +80,13 @@
   border-radius: 2px;
   text-shadow: 0 0 8px rgba(255,255,0,0.5);
   letter-spacing: 1px;
+  /* Hidden by default, revealed on hover. Previously opacity:0 with
+     no reveal rule anywhere — the badge could never be seen. */
   opacity: 0;
+  transition: opacity 0.25s;
 }
+
+.game-tile:hover .tile-rating-badge { opacity: 1; }
 
 /* ── TILE BODY ───────────────────────────────────────────────── */
 .tile-body {
