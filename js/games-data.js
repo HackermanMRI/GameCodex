@@ -40,7 +40,7 @@ const GAME_DATA = [
     image:         "images/GamePics/007.jpeg",
     month:         "July",
     year:          2026,
-    rating:        0,
+    rating:        8,
     note:          "Delighted to play as James Bond,  a young detective agent in the world of espionage",
     franchiseId:   "007",
     franchiseName: "007"
