@@ -35,6 +35,8 @@
 
 const GAME_DATA = [
 
+  
+
   {
     name:          "007 First Light",
     image:         "images/GamePics/007.jpeg",
@@ -364,6 +366,16 @@ const GAME_DATA = [
   },
 
   
+{
+    name:          "Cadillacs and Dinosaurs",
+    image:         "images/GamePics/mustofa.jpg",
+    month:         "July",
+    year:          2014,
+    rating:        7,
+    note:          "A wild ride through prehistoric chaos",
+    franchiseId:   "Xenozoic Tales",
+    franchiseName: "Xenozoic Tales"
+  },
 
   {
     name:          "Virtua Cop 2",
