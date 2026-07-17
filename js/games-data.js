@@ -52,7 +52,7 @@ const GAME_DATA = [
     image:         "images/GamePics/re9.jpg",
     month:         "June",
     year:          2026,
-    rating:        0,
+    rating:        9,
     note:          "Leon and Claire’s final battle against the Umbrella Corporation",
     franchiseId:   "Resident Evil",
     franchiseName: "Resident Evil"
