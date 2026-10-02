@@ -8,7 +8,7 @@ const MY_SPECS = {
   Motherboard: "ASUS TUF Gaming B550m-Plus",
   GPU:     "MSI NVIDIA GTX 1660 Super",
   RAM:     "Corsair 16GB DDR4 3200MHz",
-  Storage: "Kingston KC3000 2TB Gen4 NVMe SSD",
+  Storage: "Kingston KC3000 1TB Gen4 NVMe SSD",
   Power_supply: "Corsair CX550M 550W 80+ Bronze",
   Monitor1: "Viewsonic VX2479 24\" 1080p 180Hz",
   Monitor2: "MSI MP225 22\" 1080p 100Hz",
