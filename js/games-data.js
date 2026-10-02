@@ -35,6 +35,27 @@
 
 const GAME_DATA = [
 
+  {
+    name:          "Resident Evil 4 Remake",
+    image:         "images/GamePics/re4.jpg",
+    month:         "September",
+    year:          2026,
+    rating:        8,
+    note:          "Leon's relentless fight against the horrors of Umbrella Corporation",
+    franchiseId:   "Resident Evil",
+    franchiseName: "Resident Evil"
+  },
+
+  {
+    name:          "Clair Obscur: Expedition 33",
+    image:         "images/GamePics/expedition.webp",
+    month:         "August",
+    year:          2026,
+    rating:        7,
+    note:          "A solid adventure game with a gripping storyline and challenging puzzles",
+    franchiseId:   "Clair Obscur",
+    franchiseName: "Clair Obscur"
+  },
   
 
   {
@@ -54,7 +75,7 @@ const GAME_DATA = [
     image:         "images/GamePics/re9.jpg",
     month:         "June",
     year:          2026,
-    rating:        9,
+    rating:        8,
     note:          "Leon and Claire’s final battle against the Umbrella Corporation",
     franchiseId:   "Resident Evil",
     franchiseName: "Resident Evil"
@@ -78,7 +99,7 @@ const GAME_DATA = [
     image:         "images/GamePics/eldenring.jpg",
     month:         "September",
     year:          2025,
-    rating:        8.5,
+    rating:        9,
     note:          "Broken world, endless pursuit of power",
     franchiseId:   "eldenring",
     franchiseName: "Elden Ring"
