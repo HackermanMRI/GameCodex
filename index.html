@@ -3,17 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GameCodex — a personal archive of every game I have played, with ratings, notes and my setup.">
+  <meta name="theme-color" content="#020408">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23020408%27/%3E%3Cpath d=%27M8 11h16v10H8z%27 fill=%27none%27 stroke=%27%2300f5ff%27 stroke-width=%272%27/%3E%3Ccircle cx=%2712%27 cy=%2716%27 r=%271.6%27 fill=%27%23ff0080%27/%3E%3C/svg%3E">
   <title>GameCodex — Dashboard</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/shared.css">
   <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/polish.css">
 </head>
 <body>
 
-  <nav>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav aria-label="Main">
     <a href="index.html" class="nav-logo">GAME<span>CODEX</span></a>
     <div class="nav-links">
       <a href="index.html"  class="nav-link" data-page="dashboard">Dashboard</a>
@@ -22,14 +28,16 @@
   </nav>
 
 
-  <section class="hero">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="16" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 12 -4.5"/></filter></svg>
+  <main class="hero" id="main">
     <div class="hero-bg"></div>
 
     <!-- BANNER -->
     <div class="hero-banner" id="heroBanner">
-      <div class="hero-banner-overlay"></div>
+      <div class="liquid" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="hero-banner-overlay"></div>
       <div class="hero-title-block">
-        <div class="site-title">GAME<span>CODEX</span></div>
+        <h1 class="site-title">GAME<span>CODEX</span></h1>
         <div class="site-subtitle">// PERSONAL GAMING ARCHIVE</div>
       </div>
     </div>
@@ -56,7 +64,7 @@
 
     <!-- BAR CHART -->
     <div class="chart-section">
-      <div class="section-label">GAMEPLAY RATE BY YEAR</div>
+      <h2 class="section-label">GAMEPLAY RATE BY YEAR</h2>
       <div class="chart-wrap">
         <div class="chart-bars" id="chartBars">
           <div class="empty-state" style="width:100%">
@@ -68,7 +76,7 @@
 
     <!-- TOP RATED PODIUM (full width, shown first) -->
     <div class="panel-section">
-      <div class="section-label">TOP RATED</div>
+      <h2 class="section-label">TOP RATED</h2>
       <div class="panel-box">
         <div id="topRatedPodium"></div>
       </div>
@@ -76,7 +84,7 @@
 
     <!-- LATEST GAMES CAROUSEL (full width, below top rated) -->
     <div class="panel-section">
-      <div class="section-label">RECENTLY PLAYED</div>
+      <h2 class="section-label">RECENTLY PLAYED</h2>
       <div class="panel-box" style="padding: 1.5rem 0;">
         <div id="latestCarousel"></div>
       </div>
@@ -84,20 +92,20 @@
 
     <!-- GAMING SETUP -->
     <div class="specs-section">
-      <div class="section-label">GAMING SETUP</div>
+      <h2 class="section-label">GAMING SETUP</h2>
       <div class="specs-grid" id="specsGrid"></div>
     </div>
     <div class="showcase-section">
       <div class="showcase-img-wrap">
-        <img src="images/rig.PNG">
-        <div class="showcase-overlay"></div>
+        <img src="images/rig.webp" alt="My gaming desk setup: two monitors, a keyboard and an RGB-lit PC under purple lighting" width="1316" height="1195" loading="lazy" decoding="async">
       </div>
     </div>
-  </section>
+  </main>
 
   <script src="js/games-data.js"></script>
   <script src="js/shared.js"></script>
   <script src="js/dashboard.js"></script>
+<script src="js/polish.js"></script>
 
 </body>
 </html>

@@ -42,7 +42,8 @@ function getTopRated(n = 5) {
  *  both the code and the actual data convention.)
  */
 function getLatest(n = 10) {
-  return [...GAME_DATA].slice(0, n);
+  // Stable sort by date (newest first). Same-month ties keep the order written in games-data.js.
+  return getFlatGames().sort((a, b) => b.sortKey - a.sortKey).slice(0, n);
 }
 
 /**
@@ -62,7 +63,7 @@ function getYearMap() {
  * Counts unique franchiseId values across all games.
  */
 function getFranchiseCount() {
-  return new Set(GAME_DATA.map(g => g.franchiseId)).size;
+  return new Set(GAME_DATA.map(g => String(g.franchiseId).trim().toLowerCase())).size;
 }
 
 /**
@@ -72,6 +73,18 @@ function getFranchiseCount() {
 function setActiveNav(pageId) {
   document.querySelectorAll('.nav-link').forEach(link => {
     link.classList.remove('active');
-    if (link.dataset.page === pageId) link.classList.add('active');
+    link.removeAttribute('aria-current');
+    if (link.dataset.page === pageId) { link.classList.add('active'); link.setAttribute('aria-current', 'page'); }
   });
+}
+
+/** esc(s) — escape text before putting it in innerHTML (names/notes may contain quotes or &). */
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/** ratingMeter(r) — 10-segment meter; handles halves (9.5) and fits any card width. */
+function ratingMeter(r) {
+  const segs = Array.from({length: 10}, (_, i) => `<i style="--f:${Math.max(0, Math.min(1, r - i))}"></i>`).join('');
+  return `<div class="meter" role="img" aria-label="Rated ${r} out of 10">${segs}</div>`;
 }

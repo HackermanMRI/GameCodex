@@ -1,0 +1,66 @@
+/* polish.css — loaded after page CSS. Fixes + motion layer. */
+:root{--text-muted:#8ba5b4;--purple-text:#d27dff;--spring:cubic-bezier(.34,1.56,.64,1)}
+html{scroll-padding-top:80px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--neon-cyan);outline-offset:3px;box-shadow:0 0 12px rgba(0,245,255,.5)}
+.skip{position:absolute;left:1rem;top:-4rem;z-index:2000;background:var(--bg-primary);color:var(--neon-cyan);padding:.6rem 1rem;border:1px solid var(--neon-cyan);transition:top .2s}.skip:focus{top:.6rem}
+@view-transition{navigation:auto}
+nav{view-transition-name:site-nav}
+.hero{min-height:100svh}
+h1.site-title{margin:0}h2.section-label{font-weight:400}
+/* nav: liquid pill */
+.nav-links{position:relative}
+.nav-link{z-index:1}
+.nav-link:hover,.nav-link.active{background:transparent;border-color:transparent}
+.nav-pill{position:absolute;top:0;left:0;height:100%;border:1px solid var(--border-glow);background:rgba(0,245,255,.07);box-shadow:0 0 14px rgba(0,245,255,.15);pointer-events:none;transition:transform .5s var(--spring),width .5s var(--spring)}
+@media(pointer:coarse){.nav-link{min-height:44px}}
+/* hero liquid */
+.liquid{position:absolute;inset:0;z-index:0;filter:url(#goo);opacity:.28;mix-blend-mode:screen;pointer-events:none}
+.liquid i{position:absolute;border-radius:50%;width:150px;height:150px;animation:drift 12s ease-in-out infinite alternate}
+.liquid i:nth-child(1){background:var(--neon-cyan);left:14%;top:38%}
+.liquid i:nth-child(2){background:var(--neon-pink);left:34%;top:20%;width:130px;height:130px;animation-duration:10s;animation-delay:-4s}
+.liquid i:nth-child(3){background:var(--neon-purple);left:52%;top:42%;width:170px;height:170px;animation-duration:15s;animation-delay:-8s}
+@keyframes drift{0%{transform:translate(-40px,10px) scale(1)}50%{transform:translate(90px,-40px) scale(1.2)}100%{transform:translate(20px,30px) scale(.88)}}
+/* scan-in reveal */
+/* hide with opacity only: a clipped target has zero area and IntersectionObserver would never fire */
+.js-motion .reveal:not(.in){opacity:0}
+.js-motion .reveal.in{animation:scanIn .8s var(--d,0ms) cubic-bezier(.2,.8,.2,1) both}
+.js-motion .stats-row.reveal.in{animation:scanIn .8s both,pulse-glow 4s ease-in-out .8s infinite}
+.js-motion .showcase-section.reveal.in{animation:scanIn .8s both,breathingGlow 2s .8s infinite alternate ease-in-out}
+@keyframes scanIn{from{clip-path:inset(0 0 100% 0);opacity:0}to{clip-path:inset(-60px);opacity:1}}
+/* chart */
+.chart-col{gap:4px}
+.chart-bar{height:var(--h,3px);transform-origin:bottom;transition:background .3s,box-shadow .3s}
+.chart-col.empty .chart-bar{background:rgba(0,245,255,.15);box-shadow:none}
+.bar-val{font:700 .7rem 'Orbitron',monospace;color:var(--neon-cyan);min-height:1em}
+.chart-section.in .chart-bar{animation:grow .8s calc(var(--i)*60ms) cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes grow{from{transform:scaleY(0)}}
+/* podium: dim image only, never text */
+.podium-rank-1 .podium-name{font-size:.95rem}
+.podium-rank-4,.podium-rank-5{opacity:1;transform:scale(.9) translateY(8px)}
+.podium-rank-4 .podium-img-wrap,.podium-rank-5 .podium-img-wrap{filter:saturate(.7) brightness(.8);animation:none}
+.podium-rank-4 .podium-name,.podium-rank-5 .podium-name{font-size:.85rem}
+.podium-rank-1 .podium-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);transform:translateX(-120%);animation:sheen 4s 1.5s infinite}
+@keyframes sheen{to{transform:translateX(120%)}}
+/* carousel: coverflow, seamless wrap */
+.carousel-track{position:relative;display:block;width:100%;height:100%;transform:none!important;transition:none}
+.carousel-card,.carousel-card.active,.carousel-card.near,.carousel-card.far{position:absolute;left:50%;top:50%;transform:translate(calc(-50% + var(--x,0px)),-50%) scale(var(--s,1));transform-origin:center;transition:transform .7s cubic-bezier(.22,.9,.3,1),opacity .5s;cursor:pointer}
+.carousel-card.active{--s:1.05;opacity:1;cursor:default}.carousel-card.near{--s:.9;opacity:.6}.carousel-card.far{--s:.75;opacity:.3}
+.carousel-card.gone{opacity:0;pointer-events:none}
+.carousel-card.active .carousel-note{white-space:normal;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.car-ctrl{display:flex;justify-content:center;gap:.6rem;padding:0 0 1.2rem}
+.car-ctrl button{width:44px;height:44px;background:transparent;border:1px solid var(--border-glow);color:var(--neon-cyan);font:700 1rem 'Orbitron',monospace;cursor:pointer;transition:background .2s,box-shadow .2s,transform .3s var(--spring)}
+.car-ctrl button:hover{background:rgba(0,245,255,.1);box-shadow:0 0 12px rgba(0,245,255,.3);transform:translateY(-2px)}
+/* game tiles: tilt + glare, meter, always-visible rating */
+.game-tile,.game-tile:hover{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0))}
+.game-tile{position:relative}.game-tile:hover{--ty:-4px}
+.game-tile::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.16),transparent 55%);opacity:0;transition:opacity .25s;pointer-events:none}
+.game-tile:hover::after{opacity:1}
+.tile-rating-badge{opacity:1}
+.tile-franchise{color:var(--purple-text);opacity:1}
+.tile-note{-webkit-line-clamp:4;line-clamp:4}
+.meter{display:flex;gap:3px;margin:.2rem 0}
+.meter i{flex:1;height:6px;transform:skewX(-20deg);background:linear-gradient(90deg,var(--neon-yellow) calc(var(--f)*100%),rgba(139,165,180,.25) calc(var(--f)*100%));box-shadow:0 0 6px rgba(255,255,0,calc(var(--f)*.35))}
+@media(max-width:700px){.chart-bars{gap:3px}.chart-wrap{padding:1rem .6rem}.chart-year{font-size:0}.chart-year::after{content:attr(data-s);font-size:.6rem}}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.liquid{display:none}}
+@media print{.reveal{clip-path:none!important;opacity:1!important;animation:none!important}}

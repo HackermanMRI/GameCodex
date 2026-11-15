@@ -19,7 +19,7 @@ const MY_SPECS = {
   Controller: "Fantech Shooter II",
 };
 
-const BANNER_IMAGE = "images/banner.png";
+const BANNER_IMAGE = "images/banner.webp";
 
 /* ── RENDER STATS ────────────────────────────────────────────── */
 function renderStats() {
@@ -39,23 +39,24 @@ function renderStats() {
 function renderChart() {
   const container = document.getElementById('chartBars');
   const yearMap   = getYearMap();
-  const years     = Object.keys(yearMap).sort();
-
-  if (years.length === 0) {
-    container.innerHTML = `<div class="empty-state" style="width:100%">
-      <p>ADD GAMES TO games-data.js TO SEE YOUR CHART</p></div>`;
+  const ys = Object.keys(yearMap).map(Number);
+  if (ys.length === 0) {
+    container.innerHTML = `<div class="empty-state" style="width:100%"><p>ADD GAMES TO games-data.js TO SEE YOUR CHART</p></div>`;
     return;
   }
-
-  const max = Math.max(...Object.values(yearMap));
-  container.innerHTML = years.map(year => `
-    <div class="chart-col">
-      <div class="chart-bar" style="height:${Math.max(8,(yearMap[year]/max)*130)}px">
-        <div class="bar-tooltip">${yearMap[year]} game${yearMap[year]>1?'s':''}</div>
-      </div>
-      <span class="chart-year">${year}</span>
-    </div>
-  `).join('');
+  // Continuous axis: years with no games show as empty ticks instead of being silently skipped.
+  const lo = Math.min(...ys), hi = Math.max(...ys), max = Math.max(...Object.values(yearMap));
+  let html = '';
+  for (let y = lo; y <= hi; y++) {
+    const c = yearMap[y] || 0;
+    html += `<div class="chart-col${c ? '' : ' empty'}" role="listitem" aria-label="${y}: ${c} game${c === 1 ? '' : 's'}" style="--i:${y - lo}">
+      <span class="bar-val">${c || ''}</span>
+      <div class="chart-bar" style="--h:${c ? Math.max(8, c / max * 110) : 3}px"></div>
+      <span class="chart-year" data-s="'${String(y).slice(2)}">${y}</span></div>`;
+  }
+  container.setAttribute('role', 'list');
+  container.setAttribute('aria-label', 'Games played per year');
+  container.innerHTML = html;
 }
 
 /* ── TOP RATED PODIUM ────────────────────────────────────────── */
@@ -103,11 +104,11 @@ function renderTopRated() {
         </div>
         <div class="podium-img-wrap" style="box-shadow:0 0 30px ${meta.glowColor}, 0 0 60px ${meta.glowColor};border-color:${meta.borderColor};">
           ${imgSrc
-            ? `<img src="${imgSrc}" alt="${g.name}">`
+            ? `<img src="${esc(imgSrc)}" alt="${esc(g.name)}">`
             : `<div class="podium-img-placeholder">🎮</div>`}
         </div>
         <div class="podium-info">
-          <div class="podium-name">${g.name}</div>
+          <div class="podium-name">${esc(g.name)}</div>
           <div class="podium-rating" style="color:${meta.borderColor};text-shadow:0 0 10px ${meta.glowColor};">
             ${g.rating}/10
           </div>
@@ -128,6 +129,8 @@ function renderTopRated() {
 let carouselIndex  = 0;
 let carouselTimer  = null;
 let carouselGames  = [];
+let carouselHover  = false;
+let carouselPaused = matchMedia('(prefers-reduced-motion: reduce)').matches; // no autoplay for reduced-motion users
 
 function renderLatestCarousel() {
   const container = document.getElementById('latestCarousel');
@@ -147,14 +150,14 @@ function renderLatestCarousel() {
     <div class="carousel-card" data-index="${i}">
       <div class="carousel-img-wrap">
         ${g.image
-          ? `<img src="${g.image}" alt="${g.name}">`
+          ? `<img src="${esc(g.image)}" alt="${esc(g.name)}">`
           : `<div class="carousel-img-placeholder">🎮</div>`}
       </div>
       <div class="carousel-info">
-        <div class="carousel-name">${g.name}</div>
+        <div class="carousel-name">${esc(g.name)}</div>
         <div class="carousel-rating">${g.rating}/10</div>
         <div class="carousel-year">${g.month ? g.month + ' ' : ''}${g.year}</div>
-        ${g.note ? `<div class="carousel-note">"${g.note}"</div>` : ''}
+        ${g.note ? `<div class="carousel-note">"${esc(g.note)}"</div>` : ''}
       </div>
     </div>
   `).join('');
@@ -168,42 +171,49 @@ function renderLatestCarousel() {
   // Clear any existing timer before starting a new one
   if (carouselTimer) clearInterval(carouselTimer);
   carouselTimer = setInterval(advanceCarousel, 6000);
+  initCarouselControls(container);
 }
 
-function advanceCarousel() {
-  carouselIndex = (carouselIndex + 1) % carouselGames.length;
-  updateCarousel();
-}
+function advanceCarousel() { if (!carouselPaused && !carouselHover) goCarousel(carouselIndex + 1); }
+function goCarousel(i) { carouselIndex = (i + carouselGames.length) % carouselGames.length; updateCarousel(); }
 
+/* Coverflow: each card gets a signed circular offset d from the active one. Cards >3 away fade out,
+   so the wrap-around jump (last -> first) happens while invisible — no more 2000px rewind sweep. */
 function updateCarousel() {
   const track = document.getElementById('carouselTrack');
-  if (!track) return;
-
-  const cards = track.querySelectorAll('.carousel-card');
-  if (cards.length === 0) return;
-
-  /* Measure geometry from the DOM instead of hardcoding it.
-     CSS is the single source of truth — media queries that resize
-     cards (e.g. 140px on mobile) are picked up automatically.
-     Note: offsetWidth ignores transform:scale(), which is exactly
-     what we want (the layout width, not the visual width). */
-  const cardWidth = cards[0].offsetWidth;
-  const gap       = parseFloat(getComputedStyle(track).gap) || 24;
-  const step      = cardWidth + gap;
-
-  // Center the active card in the viewport
-  const containerWidth = track.parentElement.offsetWidth || 900;
-  const offset = (containerWidth / 2) - (cardWidth / 2) - (carouselIndex * step);
-
-  track.style.transform = `translateX(${offset}px)`;
-
-  cards.forEach((card, i) => {
-    const dist = Math.abs(i - carouselIndex);
-    card.classList.remove('active', 'near', 'far');
-    if      (dist === 0) card.classList.add('active');
-    else if (dist === 1) card.classList.add('near');
-    else                 card.classList.add('far');
+  if (!track || !track.children.length) return;
+  const cards = [...track.children], n = cards.length;
+  const step = cards[0].offsetWidth + 24;
+  cards.forEach((c, i) => {
+    let d = ((i - carouselIndex) % n + n) % n; if (d > n / 2) d -= n;
+    const a = Math.abs(d);
+    c.style.setProperty('--x', d * step + 'px');
+    c.classList.toggle('active', d === 0); c.classList.toggle('near', a === 1);
+    c.classList.toggle('far', a >= 2); c.classList.toggle('gone', a > 3);
+    if (d === 0) c.setAttribute('aria-current', 'true'); else c.removeAttribute('aria-current');
   });
+}
+
+function initCarouselControls(container) {
+  const box = container.parentElement; box.querySelector('.car-ctrl')?.remove();
+  const bar = document.createElement('div'); bar.className = 'car-ctrl';
+  bar.innerHTML = `<button type="button" data-a="prev" aria-label="Previous game">‹</button><button type="button" data-a="pause" aria-label="${carouselPaused ? 'Resume' : 'Pause'} auto-advance">${carouselPaused ? '▶' : '❚❚'}</button><button type="button" data-a="next" aria-label="Next game">›</button>`;
+  box.appendChild(bar);
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.a === 'prev') goCarousel(carouselIndex - 1);
+    else if (b.dataset.a === 'next') goCarousel(carouselIndex + 1);
+    else { carouselPaused = !carouselPaused; b.textContent = carouselPaused ? '▶' : '❚❚'; b.setAttribute('aria-label', (carouselPaused ? 'Resume' : 'Pause') + ' auto-advance'); }
+  });
+  container.tabIndex = 0; container.setAttribute('role', 'region');
+  container.setAttribute('aria-roledescription', 'carousel'); container.setAttribute('aria-label', 'Recently played games');
+  container.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') goCarousel(carouselIndex - 1); if (e.key === 'ArrowRight') goCarousel(carouselIndex + 1); });
+  ['mouseenter', 'focusin'].forEach(t => container.addEventListener(t, () => carouselHover = true));
+  ['mouseleave', 'focusout'].forEach(t => container.addEventListener(t, () => carouselHover = false));
+  let sx = null;
+  container.addEventListener('pointerdown', e => sx = e.clientX);
+  container.addEventListener('pointerup', e => { if (sx !== null && Math.abs(e.clientX - sx) > 40) goCarousel(carouselIndex + (e.clientX < sx ? 1 : -1)); sx = null; });
+  container.addEventListener('click', e => { const c = e.target.closest('.carousel-card'); if (c && !c.classList.contains('active')) goCarousel(+c.dataset.index); });
 }
 
 /* ── RENDER SPECS ────────────────────────────────────────────── */
@@ -211,8 +221,8 @@ function renderSpecs() {
   const grid = document.getElementById('specsGrid');
   grid.innerHTML = Object.entries(MY_SPECS).map(([key, val]) => `
     <div class="spec-item">
-      <span class="spec-key">${key}</span>
-      <span class="spec-val">${val || '—'}</span>
+      <span class="spec-key">${esc(key.replace(/_/g, ' ').replace(/([a-z])(\d)/i, '$1 $2'))}</span>
+      <span class="spec-val">${esc(val) || '—'}</span>
     </div>
   `).join('');
 }

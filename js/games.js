@@ -19,24 +19,20 @@ function renderGameList() {
 
   container.innerHTML = `
     <div class="tile-grid">
-      ${GAME_DATA.map(g => gameTile(g)).join('')}
+      ${getLatest(GAME_DATA.length).map(g => gameTile(g)).join('')}
     </div>`;
 }
 
 /* ── GAME TILE (HTML builder) ────────────────────────────────── */
 function gameTile(g) {
   const imgHtml = g.image
-    ? `<img src="${g.image}" alt="${g.name}" class="tile-img">`
+    ? `<img src="${esc(g.image)}" alt="${esc(g.name)}" class="tile-img" loading="lazy" decoding="async">`
     : `<div class="tile-img-placeholder">🎮</div>`;
 
   const noteHtml = g.note
-    ? `<div class="tile-note">"${g.note}"</div>`
+    ? `<div class="tile-note">"${esc(g.note)}"</div>`
     : '';
 
-  // Star display — filled vs empty based on rating out of 10
-  const stars = Array.from({length: 10}, (_, i) =>
-    `<span class="tile-star ${i < g.rating ? 'filled' : ''}">${i < g.rating ? '★' : '☆'}</span>`
-  ).join('');
 
   return `
     <div class="game-tile">
@@ -46,9 +42,9 @@ function gameTile(g) {
         <div class="tile-rating-badge">${g.rating}/10</div>
       </div>
       <div class="tile-body">
-        <div class="tile-name">${g.name}</div>
-        <div class="tile-franchise">${g.franchiseName || ''}</div>
-        <div class="tile-stars">${stars}</div>
+        <div class="tile-name">${esc(g.name)}</div>
+        <div class="tile-franchise">${esc(g.franchiseName)}</div>
+        ${ratingMeter(g.rating)}
         <div class="tile-meta">${g.month ? g.month + ' ' : ''}${g.year}</div>
         ${noteHtml}
       </div>
